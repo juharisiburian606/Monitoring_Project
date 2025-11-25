@@ -288,12 +288,12 @@
     <table id="projectTable">
         <tr>
             <th>No</th>
-            <th>Nama Project</th>
-            <th>Kode Project</th>
+            <th>Project</th>
+            <th>KodeProject</th>
             <th>Customer</th>
             <th>Priority</th>
             <th>Lokasi</th>
-            <th>Tanggal Mulai</th>
+            <th>TanggalMulai</th>
             <th>Deadline</th>
             <th>Action</th>
         </tr>
