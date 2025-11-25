@@ -135,14 +135,46 @@
     }
 
     .user-box {
-        font-size: 15px;
-        font-weight: 600;
-        background: #ffffff;
-        padding: 10px 18px;
+    position: relative; /* penting agar dropdown muncul di bawah */
+    font-size: 15px;
+    font-weight: 600;
+    background: #ffffff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: #1a2b48;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+}
+
+    /* Dropdown container */
+    .user-box .dropdown {
+        display: none;
+        position: absolute;
+        top: 100%; /* tepat di bawah user-box */
+        right: 0;
+        background: #fff;
         border-radius: 10px;
-        color: #1a2b48;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        overflow: hidden;
+        margin-top: 8px;
+        min-width: 180px;
+        z-index: 100;
     }
+
+    /* Dropdown links */
+    .user-box .dropdown a {
+        display: block;
+        padding: 10px 15px;
+        color: #1a2b48;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    .user-box .dropdown a:hover {
+        background: #f1f1f1;
+    }
+
 
     /* SEARCH FILTER */
     .filter-box {
@@ -199,14 +231,26 @@
 
     /* ACTION BUTTON */
     .btn-action {
-        padding: 6px 14px;
-        font-size: 13px;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        color: white;
+        padding: 8px 14px;
         background: #1b2a41;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
     }
+
+    .btn-action svg {
+        stroke: #fff;
+    }
+
+    .btn-action:hover {
+        background: #163c72ff;
+    }
+
 
     /* TOGGLE BUTTON */
     .toggle-btn {
@@ -276,7 +320,13 @@
     <!-- HEADER -->
     <div class="header">
         <h3>Project Management</h3>
-        <div class="user-box">👋 Halo, Juhari</div>
+        <div class="user-box" id="userBox">👋 Halo, Juhari
+            <span class="arrow">▼</span>
+        <div class="dropdown" id="userDropdown">
+            <a href="change_password.php">🔑 Change Password</a>
+            <a href="logout.php">🚪 Logout</a>
+        </div>
+      </div>
     </div>
 
     <!-- FILTER -->
@@ -308,7 +358,15 @@
             <td>jl kapten muslim kec. medan helvetia </td>
             <td>01 Decemeber 2025</td>
             <td>01 Oktober 2026</td>
-            <td><button class="btn-action">Detail</button></td>
+            <td>
+            <button class="btn-action">
+                <svg width="18" height="18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="9" r="3"></circle>
+                    <path d="M1 9s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5z"></path>
+                </svg>
+                Detail
+                </button>
+            </td>
         </tr>
     </table>
 
@@ -333,6 +391,24 @@ document.getElementById("searchProject").addEventListener("keyup", function() {
     });
 });
 </script>
+
+<script>
+// Toggle dropdown saat klik user-box
+document.getElementById("userBox").addEventListener("click", function() {
+    let dropdown = document.getElementById("userDropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+});
+
+// Tutup dropdown kalau klik di luar
+window.addEventListener("click", function(e) {
+    let userBox = document.getElementById("userBox");
+    let dropdown = document.getElementById("userDropdown");
+    if (!userBox.contains(e.target)) {
+        dropdown.style.display = "none";
+    }
+});
+</script>
+
 
 </body>
 </html>
