@@ -157,15 +157,45 @@
 
 
     .user-box {
-        font-size: 15px;
-        font-weight: 600;
-        color: #1a2b48;
-        background: #ffffff;
-        padding: 10px 18px;
+    position: relative; /* penting agar dropdown muncul di bawah */
+    font-size: 15px;
+    font-weight: 600;
+    background: #ffffff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: #1a2b48;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+}
+
+    /* Dropdown container */
+    .user-box .dropdown {
+        display: none;
+        position: absolute;
+        top: 100%; /* tepat di bawah user-box */
+        right: 0;
+        background: #fff;
         border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        overflow: hidden;
+        margin-top: 8px;
+        min-width: 180px;
+        z-index: 100;
     }
 
+    /* Dropdown links */
+    .user-box .dropdown a {
+        display: block;
+        padding: 10px 15px;
+        color: #1a2b48;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    .user-box .dropdown a:hover {
+        background: #f1f1f1;
+    }
     /* CARD WRAPPER */
     .cards {
         display: grid;
@@ -284,7 +314,13 @@
         <!-- HEADER -->
         <div class="header">
             <h3>Dashboard Monitoring Project</h3>
-            <div class="user-box">👋 Halo, Juhari</div>
+            <div class="user-box" id="userBox">👋 Halo, Juhari
+                <span class="arrow">▼</span>
+            <div class="dropdown" id="userDropdown">
+                <a href="change_password.php">🔑 Change Password</a>
+                <a href="logout.php">🚪 Logout</a>
+            </div>
+        </div>
         </div>
 
         <!-- 4 CARDS -->
@@ -334,6 +370,24 @@
         sidebar.classList.toggle("collapsed");
         content.classList.toggle("collapsed");
     }
+    </script>
+
+
+    <script>
+        // Toggle dropdown saat klik user-box
+        document.getElementById("userBox").addEventListener("click", function() {
+            let dropdown = document.getElementById("userDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        // Tutup dropdown kalau klik di luar
+        window.addEventListener("click", function(e) {
+            let userBox = document.getElementById("userBox");
+            let dropdown = document.getElementById("userDropdown");
+            if (!userBox.contains(e.target)) {
+                dropdown.style.display = "none";
+            }
+        });
     </script>
 
 </body>
