@@ -281,7 +281,7 @@
 
     <!-- FILTER -->
     <div class="filter-box">
-        <input type="text" placeholder="🔎 Cari Nama Project / Customer / Kode..." id="searchProject">
+        <input type="text" placeholder="🔎 Search..." id="searchProject">
     </div>
 
     <!-- TABLE -->
