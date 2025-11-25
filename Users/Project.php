@@ -291,6 +291,7 @@
             <th>Nama Project</th>
             <th>Kode Project</th>
             <th>Customer</th>
+            <th>Priority</th>
             <th>Lokasi</th>
             <th>Tanggal Mulai</th>
             <th>Deadline</th>
@@ -300,12 +301,13 @@
         <!-- DATA DEFAULT -->
         <tr>
             <td>1</td>
-            <td>Belum ada data</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
+            <td>Jempolku</td>
+            <td>0001</td>
+            <td>PT Maju bersama</td>
+            <td>Medium</td>
+            <td>jl kapten muslim kec. medan helvetia </td>
+            <td>01 Decemeber 2025</td>
+            <td>01 Oktober 2026</td>
             <td><button class="btn-action">Detail</button></td>
         </tr>
     </table>
