@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - Logbook</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
 
 <style>
     * {
@@ -299,7 +301,7 @@
         <div class="toggle-btn" onclick="toggleSidebar()">❮</div>
         <div class="logo-box">
             <img src="SCBD LOGO.png" alt="Logo" class="logo-img">
-        </div>  
+        </div>
 
 
         <div class="menu">
@@ -324,32 +326,45 @@
         </div>
         </div>
 
+        <!-- 4 CARDS -->
+        <div class="cards">
+            <div class="card">
+                <div class="card-title">Waiting List</div>
+                <div class="card-value">0</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">On Boarding</div>
+                <div class="card-value">0</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Handover</div>
+                <div class="card-value">0</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Total Projects</div>
+                <div class="card-value">0</div>
+            </div>
+        </div>
+
         <!-- TABLE -->
-    <div class="table-responsive">
-        <table class="table table-striped align-middle">
-            <thead>
-                <tr>
-                    <th>No Tiket</th>
-                    <th>Tgl Tiket</th>
-                    <th>Nama Project</th>
-                    <th>Modul</th>
-                    <th>Sub Modul</th>
-                    <th>Status</th>
-                    <th>Topik</th>
-                    <th>Deskripsi</th>
-                    <th>Lampiran</th>
-                    <th>Prioritas</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="10" class="text-center text-muted">Belum ada data</td>
-                </tr>
-            </tbody>
+        <table>
+            <tr>
+                <th>Nama Project</th>
+                <th>Date Start</th>
+                <th>Date Line</th>
+            </tr>
+            <tr>
+                <td>Belum ada data</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
         </table>
+
     </div>
 
-</div>
     <script>
     function toggleSidebar(){
         let sidebar = document.getElementById("sidebar");
