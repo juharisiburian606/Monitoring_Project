@@ -305,6 +305,7 @@
         <div class="menu">
             <a href="Dashboard.php" class="active">📊 Dashboard</a>
             <a href="Project.php">📁 Project Management</a>
+            <a href="Tickketing.php">📁 Tickketing</a>
         </div>
     </div>
 
@@ -323,45 +324,32 @@
         </div>
         </div>
 
-        <!-- 4 CARDS -->
-        <div class="cards">
-            <div class="card">
-                <div class="card-title">Waiting List</div>
-                <div class="card-value">0</div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">On Boarding</div>
-                <div class="card-value">0</div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">Handover</div>
-                <div class="card-value">0</div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">Total Projects</div>
-                <div class="card-value">0</div>
-            </div>
-        </div>
-
         <!-- TABLE -->
-        <table>
-            <tr>
-                <th>Nama Project</th>
-                <th>Date Start</th>
-                <th>Date Line</th>
-            </tr>
-            <tr>
-                <td>Belum ada data</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>No Tiket</th>
+                    <th>Tgl Tiket</th>
+                    <th>Nama Project</th>
+                    <th>Modul</th>
+                    <th>Sub Modul</th>
+                    <th>Status</th>
+                    <th>Topik</th>
+                    <th>Deskripsi</th>
+                    <th>Lampiran</th>
+                    <th>Prioritas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="10" class="text-center text-muted">Belum ada data</td>
+                </tr>
+            </tbody>
         </table>
-
     </div>
 
+</div>
     <script>
     function toggleSidebar(){
         let sidebar = document.getElementById("sidebar");
