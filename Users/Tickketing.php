@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - Logbook</title>
+<title>Ticketing Project</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-
 <style>
     * {
         margin: 0; padding: 0;
@@ -224,13 +223,6 @@
         color: #0f1c2e;
     }
 
-    /* BUTTON */
-    .btn-add { 
-        background: #14365f; 
-        color: white; 
-    }
-
-
     /* TABLE */
     table {
         width: 100%;
@@ -276,6 +268,8 @@
         border: 2px solid white;
         z-index: 99;
     }
+    /* BUTTON */
+    .btn-add { background: #14365f; color: white; }
 
     /* RESPONSIVE */
     @media (max-width: 900px) {
@@ -307,13 +301,13 @@
         <div class="toggle-btn" onclick="toggleSidebar()">❮</div>
         <div class="logo-box">
             <img src="SCBD LOGO.png" alt="Logo" class="logo-img">
-        </div>
+        </div>  
 
 
         <div class="menu">
             <a href="Dashboard.php" class="active">📊 Dashboard</a>
-            <a href="Project.php">📁 Project Management</a>
-            <a href="Tickketing.php">📁 Tickketing</a>
+            <a href="Project.php">📁 ProjectManagement</a>
+            <a href="Tickketing.php">🎫 Ticketing</a>
         </div>
     </div>
 
@@ -330,11 +324,11 @@
                 <a href="logout.php">🚪 Logout</a>
             </div>
         </div>
-        <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#modalForm">➕ Tambah Ticketing</button>
         </div>
 
         <!-- TABLE -->
     <div class="table-responsive">
+        <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#modalForm">➕ Tambah Ticketing</button>
         <table class="table table-striped align-middle">
             <thead>
                 <tr>
@@ -438,9 +432,8 @@
 </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     function toggleSidebar(){
         let sidebar = document.getElementById("sidebar");
