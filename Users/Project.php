@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Project Management - Logbook</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
 
 <style>
     * {
@@ -309,9 +311,9 @@
 
 
         <div class="menu">
-            <a href="Dashboard.php" class="active">📊 Dashboard</a>
-            <a href="Project.php">📁 ProjectManagement</a>
-            <a href="Tickketing.php">📁 Tickketing</a>
+            <a href="Dashboard.php">📊 Dashboard</a>
+            <a href="Project.php"class="active">📁 ProjectManagement</a>
+            <a href="Tickketing.php">🎫 Ticketing</a>
         </div>
     </div>
 
