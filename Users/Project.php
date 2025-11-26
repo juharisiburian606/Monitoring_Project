@@ -310,7 +310,8 @@
 
         <div class="menu">
             <a href="Dashboard.php" class="active">📊 Dashboard</a>
-            <a href="Project.php">📁 Project Management</a>
+            <a href="Project.php">📁 ProjectManagement</a>
+            <a href="Tickketing.php">📁 Tickketing</a>
         </div>
     </div>
 
