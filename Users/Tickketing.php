@@ -3,11 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Form Tiket - Monitoring Project</title>
+<title>Dashboard - Logbook</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
 <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
-    body { display: flex; background: #f5f6fa; }
+    * {
+        margin: 0; padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
+
+    body {
+        display: flex;
+        background: #f5f6fa;
+    }
 
     /* SIDEBAR */
     .sidebar {
@@ -19,31 +28,96 @@
         position: fixed;
     }
 
-    .sidebar.collapsed { width: 80px; transition: 0.3s; }
-    .content.collapsed { margin-left: 80px; width: calc(100% - 80px); }
+    .sidebar h2 {
+        font-size: 20px;
+        margin-bottom: 40px;
+        font-weight: 700;
+    }
 
-    .logo-box { text-align: center; margin-bottom: 20px; }
-    .logo-img { width: 200px; height: auto; filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 1px #fff); }
+    .sidebar.collapsed {
+        width: 80px;
+        transition: 0.3s;
+    }
+
+    .content.collapsed {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+
+
+    /* --- LOGO NORMAL --- */
+    .sidebar .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    /* Logo gambar */
+    .sidebar .logo img {
+        width: 40px;
+        transition: 0.3s;
+    }
+
+    /* --- MENU TEXT NORMAL --- */
+    .sidebar .menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    /* --- MODE COLLAPSED --- */
+    .sidebar.collapsed {
+        width: 80px;
+    }
+
+    /* Collapsed: sembunyikan teks menu */
+    .sidebar.collapsed .menu a span {
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+        /* Ketika sidebar collapse, kecilkan logo */
+    .sidebar.collapsed .logo-box img {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        transition: 0.3s;
+    }
+
+
+    /* Sembunyikan teks logo (kalau ada) */
+    .sidebar.collapsed .logo-box {
+        margin-bottom: 10px;
+    }
 
     .menu a {
-        display: flex; align-items: center; gap: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
         padding: 12px 14px;
-        font-size: 15px; border-radius: 10px;
-        color: #cfd7e3; text-decoration: none;
-        margin-bottom: 8px; transition: 0.2s;
+        font-size: 15px;
+        border-radius: 10px;
+        color: #cfd7e3;
+        text-decoration: none;
+        margin-bottom: 8px;
+        transition: 0.2s;
     }
-    .menu a.active, .menu a:hover { background: #162941; color: #fff; }
 
-    /* TOGGLE */
-    .toggle-btn {
-        position: absolute;
-        top: 20px; right: -15px;
-        width: 32px; height: 32px;
-        background: #162941; color: #fff;
-        border-radius: 50%;
-        display: flex; justify-content: center; align-items: center;
-        cursor: pointer; z-index: 99;
-        border: 2px solid #fff;
+    .menu a.active,
+    .menu a:hover {
+        background: #162941;
+        color: #fff;
     }
 
     /* CONTENT */
@@ -53,195 +127,347 @@
         width: calc(100% - 250px);
     }
 
+    /* HEADER */
     .header {
-        display: flex; justify-content: space-between;
-        align-items: center; margin-bottom: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
     }
 
-    .header h3 { font-size: 24px; font-weight: 600; color: #1a2b48; }
+    .header h3 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #1a2b48;
+    }
 
-    /* USER BOX */
+    .logo-box {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .logo-img {
+        width: 200px;       /* Bisa kamu sesuaikan */
+        height: auto;
+        filter: brightness(100%);
+        /* Tambahkan efek putih/outline */
+    filter: drop-shadow(0 0 2px #fff)
+            drop-shadow(0 0 1px #fff)
+            drop-shadow(0 0 1px #fff);
+    }
+
+
     .user-box {
-        position: relative;
-        background: #fff;
-        padding: 10px 18px;
-        font-size: 15px; font-weight: 600;
-        border-radius: 10px;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
+    position: relative; /* penting agar dropdown muncul di bawah */
+    font-size: 15px;
+    font-weight: 600;
+    background: #ffffff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: #1a2b48;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+}
+
+    /* Dropdown container */
     .user-box .dropdown {
         display: none;
         position: absolute;
-        top: 100%; right: 0;
+        top: 100%; /* tepat di bawah user-box */
+        right: 0;
         background: #fff;
         border-radius: 10px;
-        min-width: 180px;
-        overflow: hidden; margin-top: 8px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        overflow: hidden;
+        margin-top: 8px;
+        min-width: 180px;
         z-index: 100;
     }
+
+    /* Dropdown links */
     .user-box .dropdown a {
-        padding: 10px 15px;
         display: block;
+        padding: 10px 15px;
+        color: #1a2b48;
         text-decoration: none;
         font-size: 14px;
-        color: #1a2b48;
+        transition: 0.2s;
     }
-    .user-box .dropdown a:hover { background: #f1f1f1; }
 
-    /* ---- FORM ---- */
-    .form-box {
+    .user-box .dropdown a:hover {
+        background: #f1f1f1;
+    }
+    /* CARD WRAPPER */
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .card {
         background: #fff;
         padding: 25px;
         border-radius: 14px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        max-width: 750px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    .form-box h4 { margin-bottom: 20px; color: #1a2b48; font-size: 20px; }
-    .form-group { margin-bottom: 15px; }
-    label { font-size: 14px; font-weight: 600; color: #1a2b48; display: block; margin-bottom: 6px; }
-
-    input, select, textarea {
-        width: 100%; padding: 11px;
-        border-radius: 8px;
-        border: 1px solid #d5d9e2;
+    .card-title {
         font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 5px;
     }
 
-    textarea { resize: vertical; height: 90px; }
-
-    button {
-        width: 100%; background: #1b2a41;
-        padding: 12px; font-size: 15px;
-        color: #fff; border: none; border-radius: 8px;
-        cursor: pointer; margin-top: 10px;
+    .card-value {
+        font-size: 26px;
+        font-weight: 700;
+        color: #0f1c2e;
     }
-    button:hover { background: #162941; }
+
+    /* BUTTON */
+    .btn-add { 
+        background: #14365f; 
+        color: white; 
+    }
+
+
+    /* TABLE */
+    table {
+        width: 100%;
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        border-collapse: collapse;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+        padding: 14px;
+        text-align: left;
+        font-size: 14px;
+        border-bottom: 1px solid #ececec;
+    }
+
+    th {
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    td {
+        color: #1f2b44;
+        font-weight: 500;
+    }
+
+    /* TOGGLE BUTTON */
+    .toggle-btn {
+        position: absolute;
+        top: 20px;
+        right: -15px;
+        width: 32px;
+        height: 32px;
+        background: #162941;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 0.3s;
+        border: 2px solid white;
+        z-index: 99;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+        .cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .sidebar {
+            position: fixed;
+            width: 200px;
+        }
+        .content {
+            margin-left: 200px;
+        }
+        .cards {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-    <div class="toggle-btn" onclick="toggleSidebar()">❮</div>
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
 
-    <div class="logo-box">
-        <img src="SCBD LOGO.png" class="logo-img">
+        <div class="toggle-btn" onclick="toggleSidebar()">❮</div>
+        <div class="logo-box">
+            <img src="SCBD LOGO.png" alt="Logo" class="logo-img">
+        </div>
+
+
+        <div class="menu">
+            <a href="Dashboard.php" class="active">📊 Dashboard</a>
+            <a href="Project.php">📁 Project Management</a>
+            <a href="Tickketing.php">📁 Tickketing</a>
+        </div>
     </div>
 
-    <div class="menu">
-        <a href="Dashboard.php">📊 Dashboard</a>
-        <a href="Project.php">📁 Project Management</a>
-        <a href="FormTiket.php" class="active">🎫 Form Tiket</a>
-    </div>
-</div>
+    <!-- CONTENT -->
+    <div class="content" id="content">
 
-<!-- CONTENT -->
-<div class="content" id="content">
-    <div class="header">
-        <h3>Form Tiket Masalah Project</h3>
-        <div class="user-box" id="userBox">
-            👋 Halo, Juhari ▼
+        <!-- HEADER -->
+        <div class="header">
+            <h3>📌 Ticketing Project</h3>
+            <div class="user-box" id="userBox">👋 Halo, Juhari
+                <span class="arrow">▼</span>
             <div class="dropdown" id="userDropdown">
                 <a href="change_password.php">🔑 Change Password</a>
                 <a href="logout.php">🚪 Logout</a>
             </div>
         </div>
+        <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#modalForm">➕ Tambah Ticketing</button>
+        </div>
+
+        <!-- TABLE -->
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>No Tiket</th>
+                    <th>Tgl Tiket</th>
+                    <th>Nama Project</th>
+                    <th>Modul</th>
+                    <th>Sub Modul</th>
+                    <th>Status</th>
+                    <th>Topik</th>
+                    <th>Deskripsi</th>
+                    <th>Lampiran</th>
+                    <th>Prioritas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="10" class="text-center text-muted">Belum ada data</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <!-- FORM -->
-    <div class="form-box">
-        <h4>Input Tiket Baru</h4>
+    <!-- MODAL FORM -->
+<div class="modal fade" id="modalForm">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
 
-        <form action="#" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>No Tiket</label>
-                <input type="text" name="no_tiket" value="TKT-<?php echo time(); ?>" readonly>
-            </div>
-
-            <div class="form-group">
-                <label>Tanggal Tiket</label>
-                <input type="text" name="tgl_tiket" value="<?php echo date('Y-m-d'); ?>" readonly>
-            </div>
-
-            <div class="form-group">
-                <label>Nama Project</label>
-                <select name="project">
-                    <option selected disabled>-- Pilih Project --</option>
-                    <option>Project A</option>
-                    <option>Project B</option>
-                    <option>Project C</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Modul</label>
-                <select name="modul">
-                    <option selected disabled>-- Pilih Modul --</option>
-                    <option>Modul 1</option>
-                    <option>Modul 2</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Sub Modul</label>
-                <select name="sub_modul">
-                    <option selected disabled>-- Pilih Sub Modul --</option>
-                    <option>Sub Modul A</option>
-                    <option>Sub Modul B</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Topik</label>
-                <input type="text" name="topik" placeholder="Masukkan topik">
-            </div>
-
-            <div class="form-group">
-                <label>Deskripsi Masalah</label>
-                <textarea name="deskripsi" placeholder="Jelaskan permasalahan..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Lampiran (Foto)</label>
-                <input type="file" name="lampiran">
-            </div>
-
-            <div class="form-group">
-                <label>Prioritas</label>
-                <select name="prioritas">
-                    <option>Low</option>
-                    <option>Medium</option>
-                    <option>High</option>
-                </select>
-            </div>
-
-            <button type="submit">💾 Simpan Tiket</button>
-        </form>
+    <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Tambah Ticketing</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
     </div>
+
+    <form method="POST" enctype="multipart/form-data">
+    <div class="modal-body row g-3">
+
+        <div class="col-md-6">
+            <label>No Tiket</label>
+            <input type="text" class="form-control" name="no_tiket" readonly value="TCK-<?php echo time(); ?>">
+        </div>
+
+        <div class="col-md-6">
+            <label>Tgl Tiket</label>
+            <input type="text" class="form-control" name="tgl_tiket" readonly value="<?php echo date('Y-m-d'); ?>">
+        </div>
+
+        <div class="col-md-6">
+            <label>Nama Project</label>
+            <select class="form-select" name="project">
+                <option>Pilih Project</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label>Modul</label>
+            <select class="form-select" name="modul">
+                <option>Pilih Modul</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label>Sub Modul</label>
+            <select class="form-select" name="sub_modul">
+                <option>Pilih Sub Modul</option>
+            </select>
+        </div>
+
+        <div class="col-md-12">
+            <label>Topik</label>
+            <input type="text" class="form-control" name="topik">
+        </div>
+
+        <div class="col-md-12">
+            <label>Deskripsi</label>
+            <textarea class="form-control" rows="3" name="deskripsi"></textarea>
+        </div>
+
+        <div class="col-md-6">
+            <label>Lampiran (Foto)</label>
+            <input type="file" class="form-control" name="foto">
+        </div>
+
+        <div class="col-md-6">
+            <label>Prioritas</label>
+            <select class="form-select" name="prioritas">
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button class="btn btn-primary">Simpan</button>
+    </div>
+
+    </form>
+</div>
+</div>
 </div>
 
-<script>
-function toggleSidebar(){
-    let sidebar = document.getElementById("sidebar");
-    let content = document.getElementById("content");
-    sidebar.classList.toggle("collapsed");
-    content.classList.toggle("collapsed");
-}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-document.getElementById("userBox").addEventListener("click", function() {
-    let dropdown = document.getElementById("userDropdown");
-    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-});
-window.addEventListener("click", function(e) {
-    let userBox = document.getElementById("userBox");
-    let dropdown = document.getElementById("userDropdown");
-    if (!userBox.contains(e.target)) dropdown.style.display = "none";
-});
-</script>
+</div>
+    <script>
+    function toggleSidebar(){
+        let sidebar = document.getElementById("sidebar");
+        let content = document.getElementById("content");
+
+        sidebar.classList.toggle("collapsed");
+        content.classList.toggle("collapsed");
+    }
+    </script>
+
+
+    <script>
+        // Toggle dropdown saat klik user-box
+        document.getElementById("userBox").addEventListener("click", function() {
+            let dropdown = document.getElementById("userDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        // Tutup dropdown kalau klik di luar
+        window.addEventListener("click", function(e) {
+            let userBox = document.getElementById("userBox");
+            let dropdown = document.getElementById("userDropdown");
+            if (!userBox.contains(e.target)) {
+                dropdown.style.display = "none";
+            }
+        });
+    </script>
 
 </body>
 </html>
