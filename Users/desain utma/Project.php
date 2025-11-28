@@ -43,9 +43,6 @@
     .logo-img {
         width: 200px;
         transition: 0.3s;
-        filter: drop-shadow(0 0 2px #fff)
-                drop-shadow(0 0 1px #fff)
-                drop-shadow(0 0 1px #fff);
     }
 
     .sidebar.collapsed .logo-img {
@@ -306,14 +303,14 @@
 
         <div class="toggle-btn" onclick="toggleSidebar()">❮</div>
         <div class="logo-box">
-            <img src="SCBD LOGO.png" alt="Logo" class="logo-img">
+            <img src="LOGO SCBD WHITE[1].png" alt="Logo" class="logo-img">
         </div>
 
 
         <div class="menu">
             <a href="Dashboard.php">📊 Dashboard</a>
             <a href="Project.php"class="active">📁 ProjectManagement</a>
-            <a href="Tickketing.php">🎫 Ticketing</a>
+            <a href="Tickketing.php">🎫 Tickketing</a>
         </div>
     </div>
 
