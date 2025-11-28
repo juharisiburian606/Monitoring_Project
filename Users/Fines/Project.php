@@ -270,6 +270,34 @@
         z-index: 99;
     }
 
+    .popup-box {
+    width: 95%;
+    max-width: 450px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Tambahan biar lebih responsif */
+@media (max-width: 500px) {
+    .popup-box {
+        width: 92%;
+        max-width: 95%;
+        padding: 18px;
+    }
+
+    #popupTitle {
+        font-size: 18px;
+    }
+
+    .popup-box input,
+    .popup-box select {
+        font-size: 14px;
+        padding: 9px;
+    }
+}
+
+
 
     @media (max-width: 900px) {
     .sidebar {
@@ -333,6 +361,11 @@
     <div class="filter-box">
         <input type="text" placeholder="🔎 Search..." id="searchProject">
     </div>
+    <!-- BUTTON TAMBAH -->
+    <div class="mb-3">
+        <button class="btn btn-primary" onclick="openForm('project')">➕ Tambah Project</button>
+    </div>
+
 
     <!-- TABLE -->
     <table id="projectTable">
@@ -372,6 +405,26 @@
 
 </div>
 
+<!-- FORM POPUP TAMBAH PROJECT & MODUL -->
+<div id="formPopup" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; 
+background: rgba(0,0,0,0.45); backdrop-filter: blur(2px); 
+justify-content:center; align-items:center; z-index:999;">
+    
+    <div class="p-4 popup-box">
+        <h4 id="popupTitle" class="mb-3"></h4>
+
+        <form id="popupForm">
+            <div id="formFields"><!-- input akan diganti lewat JS --></div>
+
+            <div class="d-flex justify-content-end mt-3" style="gap:10px;">
+                <button type="button" class="btn btn-secondary" onclick="closeForm()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Tambah</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <script>
 function toggleSidebar(){
     let sidebar = document.getElementById("sidebar");
@@ -408,6 +461,44 @@ window.addEventListener("click", function(e) {
     }
 });
 </script>
+
+
+<script>
+function openForm(type){
+    document.getElementById("formPopup").style.display = "flex";
+    let title = document.getElementById("popupTitle");
+    let fields = document.getElementById("formFields");
+
+    if(type === 'project'){
+        title.textContent = "Tambah Project";
+        fields.innerHTML = `
+            <label>Nama Project</label>
+            <input class="form-control mb-2" type="text" placeholder="Nama Project">
+            <label>Kode Project</label>
+            <input class="form-control mb-2" type="text" placeholder="Kode Project">
+            <label>Customer</label>
+            <input class="form-control mb-2" type="text" placeholder="Nama Customer">
+            <label>Lokasi</label>
+            <input class="form-control mb-2" type="text" placeholder="Lokasi">
+            <label>Priority</label>
+            <select class="form-control mb-2">
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+            </select>
+            <label>Tanggal Mulai</label>
+            <input class="form-control mb-2" type="date">
+            <label>Deadline</label>
+            <input class="form-control mb-2" type="date">
+        `;
+    }
+}
+
+function closeForm(){
+    document.getElementById("formPopup").style.display = "none";
+}
+</script>
+
 
 
 </body>
