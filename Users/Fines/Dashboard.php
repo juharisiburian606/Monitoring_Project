@@ -266,12 +266,16 @@
         z-index: 99;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-        .cards {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    /* ==== RESPONSIVE TABLET ==== */
+@media (max-width: 900px) {
+    .sidebar {
+        width: 200px;
     }
+    .content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+}
 
     @media (max-width: 600px) {
         .sidebar {
