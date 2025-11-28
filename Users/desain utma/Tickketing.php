@@ -147,6 +147,7 @@
 
     .logo-img {
         width: 200px;       /* Bisa kamu sesuaikan */
+        height: auto;
     }
 
 
@@ -301,7 +302,7 @@
         <div class="menu">
             <a href="Dashboard.php">📊 Dashboard</a>
             <a href="Project.php">📁 ProjectManagement</a>
-            <a href="Tickketing.php"class="active">🎫 Ticketing</a>
+            <a href="Tickketing.php"class="active">🎫 Tickketing</a>
         </div>
     </div>
 
@@ -380,7 +381,7 @@
 
         <div class="col-md-12">
             <label>Lampiran</label><br>
-            <img id="d_foto" src="" class="img-fluid rounded border" style="max-height:220px;">
+            <img id="d_foto" src="LOGO SCBD WHITE[1].png" class="img-fluid rounded border" style="max-height:220px;">
         </div>
 
     </div>
