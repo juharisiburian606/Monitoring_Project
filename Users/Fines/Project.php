@@ -371,6 +371,8 @@ td {
         }
     }
 
+    
+
 </style>
 </head>
 
@@ -388,6 +390,7 @@ td {
         <div class="menu">
             <a href="Dashboard.php">📊 Dashboard</a>
             <a href="Project.php" class="active">📁 ProjectManagement</a>
+            <a href="Modul.php" class="active">📦 Modul</a>
             <a href="Tickketing.php">🎫 Tickketing</a>
         </div>
     </div>
