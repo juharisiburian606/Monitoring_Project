@@ -332,16 +332,12 @@
         <table class="table table-striped align-middle">
             <thead>
                 <tr>
-                    <th>No Tiket</th>
-                    <th>Tgl Tiket</th>
                     <th>Nama Project</th>
+                    <th>Tgl Tiket</th>
                     <th>Modul</th>
-                    <th>Sub Modul</th>
-                    <th>Topik</th>
-                    <th>Deskripsi</th>
-                    <th>Lampiran</th>
                     <th>Prioritas</th>
                     <th>Status</th>
+                    <th>action</th>
                 </tr>
             </thead>
             <tbody>
