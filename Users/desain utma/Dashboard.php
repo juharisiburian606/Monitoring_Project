@@ -150,11 +150,6 @@
     .logo-img {
         width: 200px;       /* Bisa kamu sesuaikan */
         height: auto;
-        filter: brightness(100%);
-        /* Tambahkan efek putih/outline */
-    filter: drop-shadow(0 0 2px #fff)
-            drop-shadow(0 0 1px #fff)
-            drop-shadow(0 0 1px #fff);
     }
 
 
@@ -300,14 +295,14 @@
 
         <div class="toggle-btn" onclick="toggleSidebar()">❮</div>
         <div class="logo-box">
-            <img src="SCBD LOGO.png" alt="Logo" class="logo-img">
+            <img src="LOGO SCBD WHITE[1].png" alt="Logo" class="logo-img">
         </div>
 
 
         <div class="menu">
             <a href="Dashboard.php" class="active">📊 Dashboard</a>
-            <a href="Project.php">📁 Project Management</a>
-            <a href="Tickketing.php">📁 Tickketing</a>
+            <a href="Project.php">📁 ProjectManagement</a>
+            <a href="Tickketing.php">🎫 Tickketing</a>
         </div>
     </div>
 
