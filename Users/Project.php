@@ -306,7 +306,7 @@
 
         <div class="toggle-btn" onclick="toggleSidebar()">❮</div>
         <div class="logo-box">
-            <img src="SCBD LOGO.png" alt="Logo" class="logo-img">
+            <img src="LOGO SCBD WHITE[1].png" alt="Logo" class="logo-img">
         </div>
 
 
