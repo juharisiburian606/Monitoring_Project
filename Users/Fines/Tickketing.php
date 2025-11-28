@@ -429,9 +429,7 @@
 
         <div class="col-md-6">
             <label>Sub Modul</label>
-            <select class="form-select" name="sub_modul">
-                <option>Pilih Sub Modul</option>
-            </select>
+            <input type="text" class="form-control" name="topik">
         </div>
 
         <div class="col-md-12">
