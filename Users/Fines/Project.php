@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Project Management - Logbook</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 
 
 <style>
@@ -22,7 +24,7 @@
     /* SIDEBAR */
     .sidebar {
         width: 250px;
-        background: #1b2a41;
+        background: rgb(0,0,0);
         color: white;
         height: 100vh;
         padding: 25px 20px;
@@ -388,10 +390,10 @@ td {
 
 
         <div class="menu">
-            <a href="Dashboard.php">📊 Dashboard</a>
-            <a href="Project.php" class="active">📁 ProjectManagement</a>
-            <a href="Modul.php" class="active">📦 Modul</a>
-            <a href="Tickketing.php">🎫 Tickketing</a>
+            <a href="Dashboard.php"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="Project.php" class="active"><i class="fa-solid fa-folder-tree"></i> Project Management</a>
+            <a href="Modul.php"><i class="fa-solid fa-cubes"></i> Modul</a>
+            <a href="Tickketing.php"><i class="fa-solid fa-ticket"></i> Tickketing</a>
         </div>
     </div>
 
