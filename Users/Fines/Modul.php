@@ -72,6 +72,26 @@ body { display: flex; background: #f5f6fa; }
 }
 .user-box .dropdown a:hover { background: #f1f1f1; }
 
+
+/* TOGGLE BUTTON */
+    .toggle-btn {
+        position: absolute;
+        top: 20px;
+        right: -15px;
+        width: 32px;
+        height: 32px;
+        background: #162941;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 0.3s;
+        border: 2px solid white;
+        z-index: 99;
+    }
+
 /* FILTER */
 .filter-box {
     background: #fff; padding: 18px; border-radius: 12px;
@@ -109,6 +129,31 @@ td { color: #1f2b44; font-weight: 500; }
     width: 95%; max-width: 450px; background: #fff;
     border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
+
+
+  /* ==== RESPONSIVE TABLET ==== */
+@media (max-width: 900px) {
+    .sidebar {
+        width: 200px;
+    }
+    .content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+}
+
+    @media (max-width: 600px) {
+        .sidebar {
+            position: fixed;
+            width: 200px;
+        }
+        .content {
+            margin-left: 200px;
+        }
+        .cards {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
 </style>
 </head>
 
