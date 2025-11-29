@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ticketing Project</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
     * {
         margin: 0; padding: 0;
@@ -20,7 +22,7 @@
     /* SIDEBAR */
     .sidebar {
         width: 250px;
-        background: #1b2a41;
+        background: rgb(0,0,0);
         color: white;
         height: 100vh;
         padding: 25px 20px;
@@ -266,12 +268,16 @@
     /* BUTTON */
     .btn-add { background: #14365f; color: white; }
 
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-        .cards {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    /* ==== RESPONSIVE TABLET ==== */
+@media (max-width: 900px) {
+    .sidebar {
+        width: 200px;
     }
+    .content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+}
 
     @media (max-width: 600px) {
         .sidebar {
@@ -300,9 +306,10 @@
 
 
         <div class="menu">
-            <a href="Dashboard.php">📊 Dashboard</a>
-            <a href="Project.php">📁 ProjectManagement</a>
-            <a href="Tickketing.php"class="active">🎫 Tickketing</a>
+            <a href="Dashboard.php"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="Project.php"><i class="fa-solid fa-folder-tree"></i> Project Management</a>
+            <a href="Modul.php"><i class="fa-solid fa-cubes"></i> Modul</a>
+            <a href="Tickketing.php"class="active"><i class="fa-solid fa-ticket"></i> Tickketing</a>
         </div>
     </div>
 
@@ -429,9 +436,7 @@
 
         <div class="col-md-6">
             <label>Sub Modul</label>
-            <select class="form-select" name="sub_modul">
-                <option>Pilih Sub Modul</option>
-            </select>
+            <input type="text" class="form-control" name="topik">
         </div>
 
         <div class="col-md-12">
