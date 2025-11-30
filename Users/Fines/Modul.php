@@ -3,79 +3,198 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modul Management</title>
+<title>Ticketing Project</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-
 <style>
-/* ===========================
-   CSS ORIGINAL — TANPA PERUBAHAN
-=========================== */
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
-body { display: flex; background: #f5f6fa; }
+    * {
+        margin: 0; padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
 
-/* SIDEBAR */
-.sidebar {
-    width: 250px;
-    background: rgb(0,0,0);
-    color: white;
-    height: 100vh;
-    padding: 25px 20px;
-    position: fixed;
-    transition: 0.3s;
-}
-.sidebar.collapsed { width: 80px; }
-.logo-box { text-align: center; margin-bottom: 20px; }
-.logo-img { width: 200px; transition: 0.3s; }
-.sidebar.collapsed .logo-img { opacity: 0; width: 0; }
+    body {
+        display: flex;
+        background: #f5f6fa;
+    }
 
-.menu a {
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px 14px; font-size: 15px; border-radius: 10px;
-    color: #cfd7e3; text-decoration: none; margin-bottom: 8px;
-    transition: 0.2s; white-space: nowrap; overflow: hidden;
-}
-.menu a.active, .menu a:hover { background: #162941; color: #fff; }
-.sidebar.collapsed .menu a span { opacity: 0; width: 0; overflow: hidden; }
+    /* SIDEBAR */
+    .sidebar {
+        width: 250px;
+        background: rgb(0,0,0);
+        color: white;
+        height: 100vh;
+        padding: 25px 20px;
+        position: fixed;
+    }
 
-/* CONTENT */
-.content {
-    margin-left: 250px;
-    padding: 25px;
-    width: calc(100% - 250px);
-}
-.content.collapsed {
-    margin-left: 80px;
-    width: calc(100% - 80px);
-}
+    .sidebar h2 {
+        font-size: 20px;
+        margin-bottom: 40px;
+        font-weight: 700;
+    }
 
-/* HEADER */
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-.header h3 { font-size: 24px; font-weight: 600; color: #1a2b48; }
+    .sidebar.collapsed {
+        width: 80px;
+        transition: 0.3s;
+    }
 
-.user-box {
-    position: relative;
-    font-size: 15px; font-weight: 600;
-    background: #ffffff; padding: 10px 18px;
-    border-radius: 10px; color: #1a2b48;
+    .content.collapsed {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+
+
+    /* --- LOGO NORMAL --- */
+    .sidebar .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    /* Logo gambar */
+    .sidebar .logo img {
+        width: 40px;
+        transition: 0.3s;
+    }
+
+    /* --- MENU TEXT NORMAL --- */
+    .sidebar .menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    /* --- MODE COLLAPSED --- */
+    .sidebar.collapsed {
+        width: 80px;
+    }
+
+    /* Collapsed: sembunyikan teks menu */
+    .sidebar.collapsed .menu a span {
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+        /* Ketika sidebar collapse, kecilkan logo */
+    .sidebar.collapsed .logo-box img {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        transition: 0.3s;
+    }
+
+
+    /* Sembunyikan teks logo (kalau ada) */
+    .sidebar.collapsed .logo-box {
+        margin-bottom: 10px;
+    }
+
+    .menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        font-size: 15px;
+        border-radius: 10px;
+        color: #cfd7e3;
+        text-decoration: none;
+        margin-bottom: 8px;
+        transition: 0.2s;
+    }
+
+    .menu a.active,
+    .menu a:hover {
+        background: #162941;
+        color: #fff;
+    }
+
+    /* CONTENT */
+    .content {
+        margin-left: 250px;
+        padding: 25px;
+        width: calc(100% - 250px);
+    }
+
+    /* HEADER */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .header h3 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #1a2b48;
+    }
+
+    .logo-box {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .logo-img {
+        width: 200px;       /* Bisa kamu sesuaikan */
+        height: auto;
+    }
+
+
+    .user-box {
+    position: relative; /* penting agar dropdown muncul di bawah */
+    font-size: 15px;
+    font-weight: 600;
+    background: #ffffff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: #1a2b48;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     cursor: pointer;
 }
-.user-box .dropdown {
-    display: none; position: absolute; top: 100%; right: 0;
-    background: #fff; border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    margin-top: 8px; min-width: 180px; z-index: 100;
-}
-.user-box .dropdown a {
-    display: block; padding: 10px 15px;
-    color: #1a2b48; text-decoration: none; font-size: 14px;
-}
-.user-box .dropdown a:hover { background: #f1f1f1; }
 
+    /* Dropdown container */
+    .user-box .dropdown {
+        display: none;
+        position: absolute;
+        top: 100%; /* tepat di bawah user-box */
+        right: 0;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        overflow: hidden;
+        margin-top: 8px;
+        min-width: 180px;
+        z-index: 100;
+    }
 
-/* TOGGLE BUTTON */
+    /* Dropdown links */
+    .user-box .dropdown a {
+        display: block;
+        padding: 10px 15px;
+        color: #1a2b48;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    .user-box .dropdown a:hover {
+        background: #f1f1f1;
+    }
+    
+    /* TOGGLE BUTTON */
     .toggle-btn {
         position: absolute;
         top: 20px;
@@ -93,8 +212,10 @@ body { display: flex; background: #f5f6fa; }
         border: 2px solid white;
         z-index: 99;
     }
+    /* BUTTON */
+    .btn-add { background: #14365f; color: white; }
 
-/* FILTER */
+   /* FILTER */
 .filter-box {
     background: #fff; padding: 18px; border-radius: 12px;
     margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -156,30 +277,30 @@ td { color: #1f2b44; font-weight: 500; }
             grid-template-columns: repeat(1, 1fr);
         }
     }
+
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
 
-    <div class="toggle-btn" onclick="toggleSidebar()">❮</div>
+        <div class="toggle-btn" onclick="toggleSidebar()">❮</div>
+        <div class="logo-box">
+            <img src="LOGO SCBD WHITE[1].png" alt="Logo" class="logo-img">
+        </div>  
 
-    <div class="logo-box">
-        <img src="LOGO SCBD WHITE[1].png" class="logo-img">
+
+        <div class="menu">
+            <a href="Dashboard.php"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="Project.php"><i class="fa-solid fa-folder-tree"></i> Project Management</a>
+            <a href="Modul.php"class="active"><i class="fa-solid fa-cubes"></i> Modul</a>
+        </div>
     </div>
 
-    <div class="menu">
-        <a href="Dashboard.php"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
-        <a href="Project.php"><i class="fa-solid fa-folder-tree"></i> Project Management</a>
-        <a href="Modul.php"class="active"><i class="fa-solid fa-cubes"></i> Modul</a>
-        <a href="Tickketing.php"><i class="fa-solid fa-ticket"></i> Tickketing</a>
-    </div>
-</div>
-
-<!-- CONTENT -->
-<div class="content" id="content">
+    <!-- CONTENT -->
+    <div class="content" id="content">
 
     <!-- HEADER -->
     <div class="header">
@@ -195,7 +316,7 @@ td { color: #1f2b44; font-weight: 500; }
         </div>
     </div>
 
-    <!-- FILTER -->
+        <!-- FILTER -->
     <div class="filter-box">
         <input type="text" placeholder="🔎 Search Modul..." id="searchModul">
     </div>
