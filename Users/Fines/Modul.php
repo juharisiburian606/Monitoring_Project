@@ -1,3 +1,35 @@
+<?php
+include "config.php";
+
+// Jika form disubmit
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $namaModul = mysqli_real_escape_string($conn, $_POST['nama_modul'] ?? '');
+    $idProject = (int)($_POST['id_project'] ?? 0);
+
+    if ($namaModul && $idProject) {
+        $query = "INSERT INTO modul (nama_modul, id_project) VALUES ('$namaModul', $idProject)";
+        if (mysqli_query($conn, $query)) {
+            header("Location: Modul.php");
+            exit;
+        } else {
+            die("Error: " . mysqli_error($conn));
+        }
+    }
+}
+
+// Ambil daftar project untuk dropdown
+$projects = mysqli_query($conn, "SELECT id_project, project_name FROM project ORDER BY project_name ASC");
+
+// Ambil semua modul beserta nama project
+$moduls = mysqli_query($conn, "
+    SELECT m.id_modul, m.nama_modul, p.project_name 
+    FROM modul m
+    JOIN project p ON m.id_project = p.id_project
+    ORDER BY m.id_modul DESC
+");
+?>
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -334,37 +366,38 @@ td { color: #1f2b44; font-weight: 500; }
             <th>Project</th>
             <th>Aksi</th>
         </tr>
-
-        <tr>
-            <td>1</td>
-            <td>Login User</td>
-            <td>Jempolku</td>
-            <td>
-                <button class="btn-action">✏ Edit</button>
-                <button class="btn-action" style="background:#b91c1c">🗑 Hapus</button>
-            </td>
-        </tr>
+        <?php $no = 1; while ($m = mysqli_fetch_assoc($moduls)) { ?>
+            <tr>
+                <td><?= $no++; ?></td>
+                <td><?= $m['nama_modul'] ?></td>
+                <td><?= $m['project_name'] ?></td>
+                <td>
+                    <button class="btn-action">✏ Edit</button>
+                    <button class="btn-action" style="background:#b91c1c">🗑 Hapus</button>
+                </td>
+            </tr>
+        <?php } ?>
     </table>
 </div>
 
 <!-- POPUP -->
-<div id="formPopup" style="
-    display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+<div id="formPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
     background: rgba(0,0,0,0.45); backdrop-filter:blur(2px);
     justify-content:center; align-items:center; z-index:999;">
     
     <div class="p-4 popup-box">
         <h4 class="mb-3">Tambah Modul</h4>
 
-        <form>
+        <form method="POST" action="">
             <label>Nama Modul</label>
-            <input class="form-control mb-3" type="text" placeholder="Masukkan nama modul">
+            <input class="form-control mb-3" type="text" name="nama_modul" placeholder="Masukkan nama modul" required>
 
             <label>Pilih Project</label>
-            <select class="form-control mb-3">
-                <option>-- pilih project --</option>
-                <option>Jempolku</option>
-                <option>Project Lain</option>
+            <select class="form-control mb-3" name="id_project" required>
+                <option value="">-- pilih project --</option>
+                <?php while ($p = mysqli_fetch_assoc($projects)) { ?>
+                    <option value="<?= $p['id_project'] ?>"><?= $p['project_name'] ?></option>
+                <?php } ?>
             </select>
 
             <div class="d-flex justify-content-end" style="gap:10px;">
@@ -374,6 +407,7 @@ td { color: #1f2b44; font-weight: 500; }
         </form>
     </div>
 </div>
+
 
 <script>
 function toggleSidebar(){
