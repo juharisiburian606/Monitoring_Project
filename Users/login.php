@@ -1,3 +1,44 @@
+
+<?php
+session_start();
+include "config.php"; // koneksi database
+
+// Proses login
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = mysqli_real_escape_string($conn, $_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $id_jabatan = $_POST['id_jabatan'] ?? '';
+
+    if($email && $password && $id_jabatan) {
+        // Ambil akun dari database
+        $query = "SELECT * FROM akun WHERE email='$email' AND id_jabatan='$id_jabatan'";
+        $result = mysqli_query($conn, $query);
+
+        if(mysqli_num_rows($result) === 1) {
+            $user = mysqli_fetch_assoc($result);
+            // Cek password
+            if(password_verify($password, $user['password'])) {
+                // Set session
+                $_SESSION['id_akun'] = $user['id_akun'];
+                $_SESSION['nama'] = $user['nama'];
+                $_SESSION['id_jabatan'] = $user['id_jabatan'];
+                header("Location: Fines/Dashboard.php"); // halaman user
+                exit;
+            } else {
+                $error = "Password salah!";
+            }
+        } else {
+            $error = "Email atau jabatan tidak cocok!";
+        }
+    } else {
+        $error = "Lengkapi semua form!";
+    }
+}
+
+// Ambil semua jabatan untuk dropdown
+$jabatanData = mysqli_query($conn, "SELECT * FROM jabatan ORDER BY nama_jabatan ASC");
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -120,16 +161,27 @@
         <h2>Login to You Acount</h2>
         <p>Silahkan login untuk masuk sistem montoring project</p>
 
+        <?php if(!empty($error)) { echo "<p style='color:red;'>$error</p>"; } ?>
+
         <form action="" method="post">
             <div class="input-group">
-                <input type="email" placeholder="Email" required>
+                <input type="email" name="email" placeholder="Email" required>
             </div>
 
             <div class="input-group">
-                <input type="password" placeholder="Password" required>
+                <input type="password" name="password" placeholder="Password" required>
             </div>
 
-            <button class="btn-login">Masuk Sekarang</button>
+            <div class="input-group">
+                <select name="id_jabatan" required>
+                    <option value="">-- Pilih Jabatan --</option>
+                    <?php while($row = mysqli_fetch_assoc($jabatanData)) { ?>
+                        <option value="<?= $row['id_jabatan']; ?>"><?= $row['nama_jabatan']; ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <button class="btn-login" type="submit">Masuk Sekarang</button>
         </form>
     </div>
 
