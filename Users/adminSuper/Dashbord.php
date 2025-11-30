@@ -1,5 +1,5 @@
 <?php
-include "config.php";
+include "../Fines/config.php";
 
 // Proses POST untuk tambah akun
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
