@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - Logbook</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 
 <style>
@@ -22,7 +23,7 @@
     /* SIDEBAR */
     .sidebar {
         width: 250px;
-        background: #1b2a41;
+        background: rgb(0,0,0);
         color: white;
         height: 100vh;
         padding: 25px 20px;
@@ -266,12 +267,16 @@
         z-index: 99;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-        .cards {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    /* ==== RESPONSIVE TABLET ==== */
+@media (max-width: 900px) {
+    .sidebar {
+        width: 200px;
     }
+    .content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+}
 
     @media (max-width: 600px) {
         .sidebar {
@@ -300,9 +305,9 @@
 
 
         <div class="menu">
-            <a href="Dashboard.php" class="active">📊 Dashboard</a>
-            <a href="Project.php">📁 ProjectManagement</a>
-            <a href="Tickketing.php">🎫 Tickketing</a>
+            <a href="Dashboard.php"class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="Project.php"><i class="fa-solid fa-folder-tree"></i> Project Management</a>
+            <a href="Tickketing.php"><i class="fa-solid fa-ticket"></i> Tickketing</a>
         </div>
     </div>
 
