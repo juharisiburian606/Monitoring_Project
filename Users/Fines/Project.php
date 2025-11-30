@@ -1,3 +1,54 @@
+<?php
+include "config.php";
+
+/*
+  Jika form dikirim (POST), proses simpan terlebih dahulu
+  lalu redirect agar form tidak double-submit saat refresh.
+*/
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    // Ambil & sanitize input
+    $kode    = mysqli_real_escape_string($conn, $_POST['kodeProject'] ?? '');
+    $name    = mysqli_real_escape_string($conn, $_POST['projectName'] ?? '');
+    $customer= mysqli_real_escape_string($conn, $_POST['customerName'] ?? '');
+    $marketing = mysqli_real_escape_string($conn, $_POST['marketing'] ?? '');
+    $presales  = mysqli_real_escape_string($conn, $_POST['presales'] ?? '');
+    $produksi  = mysqli_real_escape_string($conn, $_POST['produksi'] ?? '');
+    $implementasi = mysqli_real_escape_string($conn, $_POST['implementasi'] ?? '');
+    $support = mysqli_real_escape_string($conn, $_POST['support'] ?? '');
+    $jumlah  = (int)($_POST['jumlahModule'] ?? 0);
+    $lokasi = mysqli_real_escape_string($conn, $_POST['lokasi'] ?? '');
+    $priority = mysqli_real_escape_string($conn, $_POST['priority'] ?? '');
+    $start   = mysqli_real_escape_string($conn, $_POST['startDate'] ?? '');
+    $timeline= mysqli_real_escape_string($conn, $_POST['timeline'] ?? '');
+
+    // Query insert
+    $query = "INSERT INTO project
+    (kode_project, project_name, customer_name, marketing, presales, produksi, implementasi, support, jumlah_module, lokasi, priority, start_date, timeline)
+    VALUES
+    ('$kode', '$name', '$customer', '$marketing', '$presales', '$produksi', '$implementasi', '$support', $jumlah, '$lokasi', '$priority', '$start', '$timeline')";
+
+    if (mysqli_query($conn, $query)) {
+        // sukses -> redirect ke halaman yang sama (mengosongkan POST)
+        header("Location: Project.php");
+        exit;
+    } else {
+        // tampilkan error (untuk debugging)
+        die("Error saat menyimpan: " . mysqli_error($conn));
+    }
+}
+
+/*
+  Generate kode otomatis untuk ditampilkan di form.
+  Letakkan di sini sehingga nilai tersedia saat HTML dirender.
+*/
+$res = mysqli_query($conn, "SELECT MAX(id_project) AS maxCode FROM project");
+$data = mysqli_fetch_assoc($res);
+$next = (int)$data['maxCode'] + 1;
+$kodeAuto = "P" . sprintf("%03d", $next);
+?>
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -424,38 +475,39 @@ td {
     <!-- TABLE -->
     <div class="table-responsive table-container">
     <table id="projectTable">
-        <tr>
-            <th>No</th>
-            <th>Project</th>
-            <th>KodeProject</th>
-            <th>Customer</th>
-            <th>Priority</th>
-            <th>Lokasi</th>
-            <th>TanggalMulai</th>
-            <th>Deadline</th>
-            <th>Action</th>
-        </tr>
+    <tr>
+        <th>No</th>
+        <th>Project</th>
+        <th>KodeProject</th>
+        <th>Customer</th>
+        <th>Priority</th>
+        <th>Alamat</th>
+        <th>Tanggal</th>
+        <th>TanggalMulai</th>
+        <th>Deadline</th>
+        <th>Action</th>
+    </tr>
 
-        <!-- DATA DEFAULT -->
+        <!-- LOOP DATABASE -->
+        <?php
+        include "config.php";
+        $no = 1;
+        $query = mysqli_query($conn, "SELECT * FROM project ORDER BY id_project DESC");
+        while ($row = mysqli_fetch_assoc($query)) {
+        ?>
         <tr>
-            <td>1</td>
-            <td>Jempolku</td>
-            <td>0001</td>
-            <td>PT Maju bersama</td>
-            <td>Medium</td>
-            <td>jl kapten muslim kec. medan helvetia </td>
-            <td>01 Decemeber 2025</td>
-            <td>01 Oktober 2026</td>
-            <td>
-            <button class="btn-action">
-                <svg width="18" height="18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="9" cy="9" r="3"></circle>
-                    <path d="M1 9s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5z"></path>
-                </svg>
-                Detail
-                </button>
-            </td>
+            <td><?= $no++; ?></td>
+            <td><?= $row['project_name']; ?></td>
+            <td><?= $row['kode_project']; ?></td>
+            <td><?= $row['customer_name']; ?></td>
+            <td><?= $row['priority']; ?></td>
+            <td><?= $row['lokasi']; ?></td>
+            <td><?= date('d-m-Y H:i', strtotime($row['created_at'])); ?></td>
+            <td><?= date('d-m-Y', strtotime($row['start_date'])); ?></td>
+            <td><?= date('d-m-Y', strtotime($row['timeline'])); ?></td>
+            <td><button class="btn-action">Detail</button></td>
         </tr>
+        <?php } ?>
     </table>
 </div>
 
@@ -468,7 +520,7 @@ justify-content:center; align-items:center; z-index:999;">
     <div class="p-4 popup-box">
         <h4 id="popupTitle" class="mb-3"></h4>
 
-        <form id="popupForm">
+        <form id="popupForm" method="POST" action="">
             <div id="formFields"><!-- input akan diganti lewat JS --></div>
 
             <div class="d-flex justify-content-end mt-3" style="gap:10px;">
@@ -527,74 +579,93 @@ function openForm(type){
     fields.innerHTML = `
         <div class="row">
             <div class="col-md-6 mb-2">
-                <label>kodeProject</label>
-                <input class="form-control" type="text" placeholder="Auto">
+            <label>kodeProject</label>
+            <input class="form-control" type="text" name="kodeProject" value="<?= $kodeAuto ?>" readonly>
             </div>
 
             <div class="col-md-6 mb-2">
-                <label>ProjectName</label>
-                <input class="form-control" type="text" placeholder="Project Name">
-            </div>
-            <div class="col-md-6 mb-2">
-                <label>Customer Name</label>
-                <input class="form-control" type="text" placeholder="Customer Name">
+            <label>ProjectName</label>
+            <input class="form-control" type="text" name="projectName" placeholder="Project Name">
             </div>
 
             <div class="col-md-6 mb-2">
-                <label>Marketing</label>
-                 <select class="form-control">
-                    <option>--pilihMarketing--</option>
-                    <option>sabda</option>
-                    <option>juhari</option>
-                </select>
-            </div>
-            <div class="col-md-6 mb-2">
-                <label>Presales</label>
-                <input class="form-control" type="text" placeholder="Presales">
+            <label>Customer Name</label>
+            <input class="form-control" type="text" name="customerName" placeholder="Customer Name">
             </div>
 
             <div class="col-md-6 mb-2">
-                <label>Produksi</label>
-                <select class="form-control">
-                    <option>--pilihProduksi--</option>
-                    <option>sabda</option>
-                    <option>juhari</option>
-                </select>
-            </div>
-            <div class="col-md-6 mb-2">
-                <label>Implementasi</label>
-                <select class="form-control">
-                    <option>--pilihImplementasi--</option>
-                    <option>sabda</option>
-                    <option>juhari</option>
-                </select>
+            <label>Marketing</label>
+            <select class="form-control" name="marketing">
+                <option value="">--pilihMarketing--</option>
+                <option value="sabda (CEO)">sabda (CEO)</option>
+                <option value="juhari(CEO)">juhari(CEO)</option>
+            </select>
             </div>
 
             <div class="col-md-6 mb-2">
-                <label>Support</label>
-                <input class="form-control" type="text" placeholder="Support">
+            <label>Presales</label>
+            <select class="form-control" name="presales">
+                <option value="">--pilihPresales--</option>
+                <option value="sabda (CEO)">sabda (CEO)</option>
+                <option value="juhari(CEO)">juhari(CEO)</option>
+            </select>
             </div>
+
+            <div class="col-md-6 mb-2">
+            <label>Produksi</label>
+            <select class="form-control" name="produksi">
+                <option value="">--pilihProduksi--</option>
+                <option value="sabda (CEO)">sabda (CEO)</option>
+                <option value="juhari(CEO)">juhari(CEO)</option>
+            </select>
+            </div>
+
+            <div class="col-md-6 mb-2">
+            <label>Implementasi</label>
+            <select class="form-control" name="implementasi">
+                <option value="">--pilihImplementasi--</option>
+                <option value="sabda (CEO)">sabda (CEO)</option>
+                <option value="juhari(CEO)">juhari(CEO)</option>
+            </select>
+            </div>
+
+            <div class="col-md-6 mb-2">
+            <label>Support</label>
+            <select class="form-control" name="support">
+                <option value="">--pilihSupport--</option>
+                <option value="sabda (CEO)">sabda (CEO)</option>
+                <option value="juhari(CEO)">juhari(CEO)</option>
+            </select>
+            </div>
+
             <div class="col-md-6 mb-2">
                 <label>Jumlah Module</label>
-                <input class="form-control" type="number" placeholder="Jumlah Module">
+                <input class="form-control" type="number" name="jumlahModule" placeholder="Jumlah Module">
             </div>
 
             <div class="col-md-6 mb-2">
-                <label>Priority</label>
-                <select class="form-control">
-                    <option>Low</option>
-                    <option>Medium</option>
-                    <option>High</option>
-                </select>
+                <label>Alamat</label>
+                <input class="form-control" type="text" id="lokasi" name="lokasi" placeholder="Alamat">
+            </div>
+
+
+            <div class="col-md-6 mb-2">
+            <label>Priority</label>
+            <select class="form-control" name="priority">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
             </div>
 
             <div class="col-md-6 mb-2">
-                <label>Start Date</label>
-                <input class="form-control" type="date">
+            <label>Start Date</label>
+            <input class="form-control" type="date" name="startDate">
             </div>
+
             <div class="col-md-6 mb-2">
-                <label>Timeline</label>
-                <input class="form-control" type="date">
+            <label>Timeline</label>
+            <input class="form-control" type="date" name="timeline">
             </div>
         </div>
         `;
@@ -607,6 +678,21 @@ function closeForm(){
     document.getElementById("formPopup").style.display = "none";
 }
 </script>
+
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUemkvf5Ov8qy23wJWRSLB6YgzLuaJgqM&libraries=places"></script>
+<script>
+function initAutocomplete() {
+    var input = document.getElementById("lokasi");
+    var autocomplete = new google.maps.places.Autocomplete(input, {
+        types: ['geocode'],
+        componentRestrictions: { country: 'id' } // hanya Indonesia
+    });
+}
+google.maps.event.addDomListener(window, 'load', initAutocomplete);
+</script>
+
 
 </body>
 </html>
