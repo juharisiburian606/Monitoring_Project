@@ -305,10 +305,9 @@
 
 
         <div class="menu">
-            <a href="Dashboard.php"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="Dashboard.php"class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
             <a href="Project.php"><i class="fa-solid fa-folder-tree"></i> Project Management</a>
-            <a href="Modul.php"class="active"><i class="fa-solid fa-cubes"></i> Modul</a>
-            <a href="Tickketing.php"><i class="fa-solid fa-ticket"></i> Tickketing</a>
+            <a href="Modul.php"><i class="fa-solid fa-cubes"></i> Modul</a>
         </div>
     </div>
 
