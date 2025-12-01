@@ -1,4 +1,5 @@
 <?php
+include "../Finance/config.php";
 session_start();
 
 // Cek apakah sudah login
@@ -11,6 +12,24 @@ $allowed = ["Marketing", "Customer Support", "Implementasi"];
 if (!in_array($_SESSION['nama_jabatan'], $allowed)) {
     echo "<script>alert('Anda tidak memiliki akses ke dashboard ini'); window.location='../';</script>";
     exit;
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    // Query insert
+    $query = "INSERT INTO project
+    (kode_project, project_name, customer_name, marketing, presales, produksi, implementasi, support, jumlah_module, lokasi, priority, start_date, timeline)
+    VALUES
+    ('$kode', '$name', '$customer', '$marketing', '$presales', '$produksi', '$implementasi', '$support', $jumlah, '$lokasi', '$priority', '$start', '$timeline')";
+
+    if (mysqli_query($conn, $query)) {
+        // sukses -> redirect ke halaman yang sama (mengosongkan POST)
+        header("Location: Project.php");
+        exit;
+    } else {
+        // tampilkan error (untuk debugging)
+        die("Error saat menyimpan: " . mysqli_error($conn));
+    }
 }
 ?>
 
@@ -431,11 +450,6 @@ td {
     <div class="filter-box">
         <input type="text" placeholder="🔎 Search..." id="searchProject">
     </div>
-    <!-- BUTTON TAMBAH -->
-    <div class="mb-3">
-        <button class="btn btn-primary" onclick="openForm('project')">➕ Tambah Project</button>
-    </div>
-
 
     <!-- TABLE -->
     <div class="table-responsive table-container">
@@ -446,54 +460,36 @@ td {
             <th>KodeProject</th>
             <th>Customer</th>
             <th>Priority</th>
-            <th>Lokasi</th>
+            <th>Alamat</th>
+            <th>Tanggal</th>
             <th>TanggalMulai</th>
             <th>Deadline</th>
             <th>Action</th>
         </tr>
 
-        <!-- DATA DEFAULT -->
+        <!-- LOOP DATABASE -->
+        <?php
+        include "../Finance/config.php";
+        $no = 1;
+        $query = mysqli_query($conn, "SELECT * FROM project ORDER BY id_project DESC");
+        while ($row = mysqli_fetch_assoc($query)) {
+        ?>
         <tr>
-            <td>1</td>
-            <td>Jempolku</td>
-            <td>0001</td>
-            <td>PT Maju bersama</td>
-            <td>Medium</td>
-            <td>jl kapten muslim kec. medan helvetia </td>
-            <td>01 Decemeber 2025</td>
-            <td>01 Oktober 2026</td>
-            <td>
-            <button class="btn-action">
-                <svg width="18" height="18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="9" cy="9" r="3"></circle>
-                    <path d="M1 9s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5z"></path>
-                </svg>
-                Detail
-                </button>
-            </td>
+            <td><?= $no++; ?></td>
+            <td><?= $row['project_name']; ?></td>
+            <td><?= $row['kode_project']; ?></td>
+            <td><?= $row['customer_name']; ?></td>
+            <td><?= $row['priority']; ?></td>
+            <td><?= $row['lokasi']; ?></td>
+            <td><?= date('d-m-Y H:i', strtotime($row['created_at'])); ?></td>
+            <td><?= date('d-m-Y', strtotime($row['start_date'])); ?></td>
+            <td><?= date('d-m-Y', strtotime($row['timeline'])); ?></td>
+            <td><button class="btn-action">Detail</button></td>
         </tr>
+        <?php } ?>
     </table>
 </div>
 
-
-<!-- FORM POPUP TAMBAH PROJECT & MODUL -->
-<div id="formPopup" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; 
-background: rgba(0,0,0,0.45); backdrop-filter: blur(2px); 
-justify-content:center; align-items:center; z-index:999;">
-    
-    <div class="p-4 popup-box">
-        <h4 id="popupTitle" class="mb-3"></h4>
-
-        <form id="popupForm">
-            <div id="formFields"><!-- input akan diganti lewat JS --></div>
-
-            <div class="d-flex justify-content-end mt-3" style="gap:10px;">
-                <button type="button" class="btn btn-secondary" onclick="closeForm()">Cancel</button>
-                <button type="submit" class="btn btn-primary">Tambah</button>
-            </div>
-        </form>
-    </div>
-</div>
 <script>
 function toggleSidebar(){
     let sidebar = document.getElementById("sidebar");
@@ -530,99 +526,5 @@ window.addEventListener("click", function(e) {
     }
 });
 </script>
-
-
-<script>
-function openForm(type){
-    document.getElementById("formPopup").style.display = "flex";
-    let title = document.getElementById("popupTitle");
-    let fields = document.getElementById("formFields");
-
-    if(type === 'project'){
-    title.textContent = "Tambah Project";
-    fields.innerHTML = `
-        <div class="row">
-            <div class="col-md-6 mb-2">
-                <label>kodeProject</label>
-                <input class="form-control" type="text" placeholder="Auto">
-            </div>
-
-            <div class="col-md-6 mb-2">
-                <label>ProjectName</label>
-                <input class="form-control" type="text" placeholder="Project Name">
-            </div>
-            <div class="col-md-6 mb-2">
-                <label>Customer Name</label>
-                <input class="form-control" type="text" placeholder="Customer Name">
-            </div>
-
-            <div class="col-md-6 mb-2">
-                <label>Marketing</label>
-                 <select class="form-control">
-                    <option>--pilihMarketing--</option>
-                    <option>sabda</option>
-                    <option>juhari</option>
-                </select>
-            </div>
-            <div class="col-md-6 mb-2">
-                <label>Presales</label>
-                <input class="form-control" type="text" placeholder="Presales">
-            </div>
-
-            <div class="col-md-6 mb-2">
-                <label>Produksi</label>
-                <select class="form-control">
-                    <option>--pilihProduksi--</option>
-                    <option>sabda</option>
-                    <option>juhari</option>
-                </select>
-            </div>
-            <div class="col-md-6 mb-2">
-                <label>Implementasi</label>
-                <select class="form-control">
-                    <option>--pilihImplementasi--</option>
-                    <option>sabda</option>
-                    <option>juhari</option>
-                </select>
-            </div>
-
-            <div class="col-md-6 mb-2">
-                <label>Support</label>
-                <input class="form-control" type="text" placeholder="Support">
-            </div>
-            <div class="col-md-6 mb-2">
-                <label>Jumlah Module</label>
-                <input class="form-control" type="number" placeholder="Jumlah Module">
-            </div>
-
-            <div class="col-md-6 mb-2">
-                <label>Priority</label>
-                <select class="form-control">
-                    <option>Low</option>
-                    <option>Medium</option>
-                    <option>High</option>
-                </select>
-            </div>
-
-            <div class="col-md-6 mb-2">
-                <label>Start Date</label>
-                <input class="form-control" type="date">
-            </div>
-            <div class="col-md-6 mb-2">
-                <label>Timeline</label>
-                <input class="form-control" type="date">
-            </div>
-        </div>
-        `;
-
-    }
-
-}
-
-function closeForm(){
-    document.getElementById("formPopup").style.display = "none";
-}
-</script>
-
 </body>
 </html>
