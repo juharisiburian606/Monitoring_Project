@@ -338,7 +338,7 @@ if ($_SESSION['nama_jabatan'] !== "Finance") {
                 <span class="arrow">▼</span>
             <div class="dropdown" id="userDropdown">
                 <a href="change_password.php">🔑 Change Password</a>
-                <a href="logout.php">🚪 Logout</a>
+                <a href="../logout.php">🚪 Logout</a>
             </div>
         </div>
         </div>
