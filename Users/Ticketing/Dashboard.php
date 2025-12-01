@@ -9,7 +9,7 @@ if (!isset($_SESSION['id_akun'])) {
 
 $allowed = ["Marketing", "Customer Support", "Implementasi"];
 if (!in_array($_SESSION['nama_jabatan'], $allowed)) {
-    echo "<script>alert('Anda tidak memiliki akses ke dashboard ini'); window.location='../';</script>";
+    echo "<script>alert('Anda tidak memiliki akses ke dashboard ini'); window.location='../login.php';</script>";
     exit;
 }
 ?>
