@@ -1,3 +1,19 @@
+<?php
+session_start();
+
+// Cek apakah sudah login
+if (!isset($_SESSION['id_akun'])) {
+    header("Location: ../login.php");
+    exit;
+}
+
+$allowed = ["Marketing", "Customer Support", "Implementasi"];
+if (!in_array($_SESSION['nama_jabatan'], $allowed)) {
+    echo "<script>alert('Anda tidak memiliki akses ke dashboard ini'); window.location='../';</script>";
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -318,11 +334,11 @@
         <!-- HEADER -->
         <div class="header">
             <h3>📌 Ticketing Project</h3>
-            <div class="user-box" id="userBox">👋 Halo, Juhari
+            <div class="user-box" id="userBox">👋 Halo, <?= $_SESSION['nama']; ?> (<?= $_SESSION['nama_jabatan']; ?>)
                 <span class="arrow">▼</span>
             <div class="dropdown" id="userDropdown">
                 <a href="change_password.php">🔑 Change Password</a>
-                <a href="logout.php">🚪 Logout</a>
+                <a href="../logout.php">🚪 Logout</a>
             </div>
         </div>
         </div>
