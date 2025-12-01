@@ -1,3 +1,20 @@
+<?php
+session_start();
+
+// Cek apakah sudah login
+if (!isset($_SESSION['id_akun'])) {
+    header("Location: ../../login.php");
+    exit;
+}
+
+// Cek apakah jabatan sesuai Finance
+if ($_SESSION['nama_jabatan'] !== "Finance") {
+    echo "<script>alert('Anda tidak memiliki akses ke dashboard Finance'); window.location='../';</script>";
+    exit;
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -316,8 +333,8 @@
 
         <!-- HEADER -->
         <div class="header">
-            <h3>Dashboard Monitoring Project</h3>
-            <div class="user-box" id="userBox">👋 Halo, Juhari
+            <h3>Dashboard Finance</h3>
+            <div class="user-box" id="userBox">👋 Halo, <?= $_SESSION['nama']; ?> (<?= $_SESSION['nama_jabatan']; ?>)
                 <span class="arrow">▼</span>
             <div class="dropdown" id="userDropdown">
                 <a href="change_password.php">🔑 Change Password</a>
