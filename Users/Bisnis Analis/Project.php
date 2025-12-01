@@ -7,9 +7,9 @@ if (!isset($_SESSION['id_akun'])) {
     exit;
 }
 
-$allowed = ["Marketing", "Customer Support", "Implementasi"];
-if (!in_array($_SESSION['nama_jabatan'], $allowed)) {
-    echo "<script>alert('Anda tidak memiliki akses ke dashboard ini'); window.location='../';</script>";
+// Cek apakah jabatan sesuai Finance
+if ($_SESSION['nama_jabatan'] !== "Bisnis Analis") {
+    echo "<script>alert('Anda tidak memiliki akses ke dashboard Finance'); window.location='../login.php';</script>";
     exit;
 }
 ?>
