@@ -1,5 +1,18 @@
 <?php
 include "config.php";
+session_start();
+
+// Cek apakah sudah login
+if (!isset($_SESSION['id_akun'])) {
+    header("Location: ../../login.php");
+    exit;
+}
+
+// Cek apakah jabatan sesuai Finance
+if ($_SESSION['nama_jabatan'] !== "Finance") {
+    echo "<script>alert('Anda tidak memiliki akses ke dashboard Finance'); window.location='../';</script>";
+    exit;
+}
 
 /*
   Jika form dikirim (POST), proses simpan terlebih dahulu
@@ -453,7 +466,7 @@ td {
         <!-- HEADER -->
         <div class="header">
             <h3>Project Management</h3>
-            <div class="user-box" id="userBox">👋 Halo, Juhari
+            <div class="user-box" id="userBox">👋 Halo, <?= $_SESSION['nama']; ?> (<?= $_SESSION['nama_jabatan']; ?>)
                 <span class="arrow">▼</span>
             <div class="dropdown" id="userDropdown">
                 <a href="change_password.php">🔑 Change Password</a>
