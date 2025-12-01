@@ -9,7 +9,7 @@ if (!isset($_SESSION['id_akun'])) {
 
 // Cek apakah jabatan sesuai Finance
 if ($_SESSION['nama_jabatan'] !== "Finance") {
-    echo "<script>alert('Anda tidak memiliki akses ke dashboard Finance'); window.location='../';</script>";
+    echo "<script>alert('Anda tidak memiliki akses ke dashboard Finance'); window.location='../login.php';</script>";
     exit;
 }
 ?>
