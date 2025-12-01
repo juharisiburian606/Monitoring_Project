@@ -4,7 +4,7 @@ session_start();
 
 // Cek apakah sudah login
 if (!isset($_SESSION['id_akun'])) {
-    header("Location: ../../login.php");
+    header("Location: ../login.php");
     exit;
 }
 
@@ -456,7 +456,7 @@ td {
         <div class="menu">
             <a href="Dashboard.php"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
             <a href="Project.php" class="active"><i class="fa-solid fa-folder-tree"></i> Project Management</a>
-            <a href="Modul.php"><i class="fa-solid fa-cubes"></i> Modul</a>
+            <a href="../Modul.php"><i class="fa-solid fa-cubes"></i> Modul</a>
         </div>
     </div>
 
