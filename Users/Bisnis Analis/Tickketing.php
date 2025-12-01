@@ -396,7 +396,7 @@
         <div class="col-md-12">
             <label>Lampiran</label><br>
             <div class="col-md-12">
-    <label>Lampiran</label><br>
+    
 
     <!-- Preview foto/video -->
     <div id="preview_area">
