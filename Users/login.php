@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 // ⬇ Finance
-                if ($jabatan === "finance") {
+                if ($jabatan === "Finance") {
                     header("Location: Finance/Dashboard.php");
                     exit;
                 }
