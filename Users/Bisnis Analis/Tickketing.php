@@ -1,3 +1,19 @@
+<?php
+session_start();
+
+// Cek apakah sudah login
+if (!isset($_SESSION['id_akun'])) {
+    header("Location: ../login.php");
+    exit;
+}
+
+// Cek apakah jabatan sesuai Finance
+if ($_SESSION['nama_jabatan'] !== "Bisnis Analis") {
+    echo "<script>alert('Anda tidak memiliki akses ke dashboard Finance'); window.location='../login.php';</script>";
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
