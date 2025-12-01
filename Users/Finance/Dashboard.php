@@ -3,7 +3,7 @@ session_start();
 
 // Cek apakah sudah login
 if (!isset($_SESSION['id_akun'])) {
-    header("Location: ../../login.php");
+    header("Location: ../login.php");
     exit;
 }
 
