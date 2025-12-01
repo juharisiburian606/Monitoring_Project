@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // ⬇ Gabungan Tickketing
                 $jabatan_tickketing = ["Marketing", "Customer Support", "Implementasi"];
                 if (in_array($jabatan, $jabatan_tickketing)) {
-                    header("Location: Tickketing/Dashboard.php");
+                    header("Location: Ticketing/Dashboard.php");
                     exit;
                 }
 
