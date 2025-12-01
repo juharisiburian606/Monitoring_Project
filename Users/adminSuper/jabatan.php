@@ -1,5 +1,5 @@
 <?php
-include "../Fines/config.php";
+include "../Finance/config.php";
 
 // Proses POST untuk tambah jabatan
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
