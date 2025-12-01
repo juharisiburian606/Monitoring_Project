@@ -4,7 +4,7 @@ session_start();
 
 // Cek apakah sudah login
 if (!isset($_SESSION['id_akun'])) {
-    header("Location: ../../login.php");
+    header("Location: ../login.php");
     exit;
 }
 
@@ -355,7 +355,7 @@ td { color: #1f2b44; font-weight: 500; }
             <span>▼</span>
             <div class="dropdown" id="userDropdown">
                 <a href="change_password.php">🔑 Change Password</a>
-                <a href="logout.php">🚪 Logout</a>
+                <a href="../logout.php">🚪 Logout</a>
             </div>
         </div>
     </div>
