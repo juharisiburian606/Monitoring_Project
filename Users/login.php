@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 include "config.php"; // koneksi database
@@ -10,20 +9,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_jabatan = $_POST['id_jabatan'] ?? '';
 
     if($email && $password && $id_jabatan) {
-        // Ambil akun dari database
-        $query = "SELECT * FROM akun WHERE email='$email' AND id_jabatan='$id_jabatan'";
+        $query = "SELECT a.*, j.nama_jabatan FROM akun a
+                  LEFT JOIN jabatan j ON a.id_jabatan = j.id_jabatan
+                  WHERE email='$email' AND a.id_jabatan='$id_jabatan'";
         $result = mysqli_query($conn, $query);
 
         if(mysqli_num_rows($result) === 1) {
             $user = mysqli_fetch_assoc($result);
-            // Cek password
+
             if(password_verify($password, $user['password'])) {
-                // Set session
+
                 $_SESSION['id_akun'] = $user['id_akun'];
                 $_SESSION['nama'] = $user['nama'];
                 $_SESSION['id_jabatan'] = $user['id_jabatan'];
-                header("Location: Fines/Dashboard.php"); // halaman user
-                exit;
+                $_SESSION['nama_jabatan'] = $user['nama_jabatan'];
+
+                $jabatan = $user['nama_jabatan'];
+
+                // ====== Redirect sesuai jabatan ======
+                // ⬇ Gabungan Tickketing
+                $jabatan_tickketing = ["Marketing", "Customer Support", "Implementasi"];
+                if (in_array($jabatan, $jabatan_tickketing)) {
+                    header("Location: Tickketing/Dashboard.php");
+                    exit;
+                }
+
+                // ⬇ Finance
+                if ($jabatan === "finance") {
+                    header("Location: Finance/Dashboard.php");
+                    exit;
+                }
+
+                // ⬇ Bisnis Analis
+                if ($jabatan === "Bisnis Analis") {
+                    header("Location: Bisnis Analis/Dashboard.php");
+                    exit;
+                }
+
+                // ⬇ Product Manager
+                if ($jabatan === "Product Manager") {
+                    header("Location: Product Manager/Dashboard.php");
+                    exit;
+                }
+
+                // ⬇ Gabungan Produksi/Teknisi
+                $jabatan_produksi = ["Frontend", "Backend", "Mobile", "QA", "UI UX"];
+                if (in_array($jabatan, $jabatan_produksi)) {
+                    header("Location: Produksi/Dashboard.php");
+                    exit;
+                }
+
+                // ⬇ QE
+                if ($jabatan === "QE") {
+                    header("Location: QE/Dashboard.php");
+                    exit;
+                }
+
+                // Jika jabatan tidak ditemukan
+                $error = "Dashboard untuk jabatan ini belum tersedia!";
+                
             } else {
                 $error = "Password salah!";
             }
@@ -34,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Lengkapi semua form!";
     }
 }
+
 
 // Ambil semua jabatan untuk dropdown
 $jabatanData = mysqli_query($conn, "SELECT * FROM jabatan ORDER BY nama_jabatan ASC");
