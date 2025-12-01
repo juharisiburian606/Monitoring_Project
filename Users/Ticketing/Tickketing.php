@@ -1,4 +1,5 @@
 <?php
+include "../Finance/config.php"; // sesuaikan path config.php
 session_start();
 
 // Cek apakah sudah login
@@ -9,9 +10,63 @@ if (!isset($_SESSION['id_akun'])) {
 
 $allowed = ["Marketing", "Customer Support", "Implementasi"];
 if (!in_array($_SESSION['nama_jabatan'], $allowed)) {
-    echo "<script>alert('Anda tidak memiliki akses ke dashboard ini'); window.location='../';</script>";
+    echo "<script>alert('Anda tidak memiliki akses ke dashboard ini'); window.location='../login.php';</script>";
     exit;
 }
+
+
+// Ambil data project untuk dropdown
+$projects = mysqli_query($conn, "SELECT * FROM project ORDER BY project_name ASC");
+
+// Ambil data modul untuk dropdown
+$moduls = mysqli_query($conn, "SELECT m.*, p.project_name FROM modul m 
+                                  JOIN project p ON m.id_project = p.id_project
+                                  ORDER BY m.nama_modul ASC");
+
+// Ambil data prioritas untuk dropdown
+$prioritas = mysqli_query($conn, "SELECT * FROM prioritas ORDER BY id_prioritas ASC");
+
+
+// Ambil semua data ticketing dengan join project dan modul
+$tickets = mysqli_query($conn, "
+    SELECT t.*, p.project_name, m.nama_modul
+    FROM ticketing t
+    JOIN project p ON t.id_project = p.id_project
+    JOIN modul m ON t.id_modul = m.id_modul
+    ORDER BY t.tgl_tiket DESC
+");
+
+// Proses simpan ticket jika form disubmit
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $no_tiket = $_POST['no_tiket'];
+    $tgl_tiket = $_POST['tgl_tiket'];
+    $project_id = $_POST['project'];
+    $modul_id = $_POST['modul'];
+    $submodul = $_POST['submodul'];
+    $topik = $_POST['topik'];
+    $deskripsi = $_POST['deskripsi'];
+    $prioritas_val = $_POST['prioritas'];
+
+    // Upload foto jika ada
+    $foto_name = null;
+    if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
+        $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+        $foto_name = "ticket_" . time() . "." . $ext;
+        move_uploaded_file($_FILES['foto']['tmp_name'], "uploads/" . $foto_name);
+    }
+
+    // Simpan ke database
+    $query = "INSERT INTO ticketing (no_tiket, tgl_tiket, id_project, id_modul, sub_modul, topik, deskripsi, foto, prioritas, status) 
+              VALUES ('$no_tiket', '$tgl_tiket', '$project_id', '$modul_id', '$submodul', '$topik', '$deskripsi', '$foto_name', '$prioritas_val', 'Pending')";
+
+    if (mysqli_query($conn, $query)) {
+        echo "<script>alert('Ticket berhasil ditambahkan'); window.location='Tickketing.php';</script>";
+        exit;
+    } else {
+        echo "Error: " . mysqli_error($conn);
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -358,17 +413,29 @@ if (!in_array($_SESSION['nama_jabatan'], $allowed)) {
                 </tr>
             </thead>
             <tbody>
-                <td>Project A</td>
-                <td>2025-11-28</td>
-                <td>Dashboard</td>
-                <td>High</td>
-                <td>Pending</td>
-                <td>
-                    <button class="btn btn-info btn-sm" onclick="showDetail(
-                        'TCK-001','2025-11-28','Project A','Dashboard','UI Design',
-                        'Perbaikan UI bagian tabel','Perbaikan UI bagian tabel','LampiranUI.png','High','Pending'
-                    )">Detail</button>
-                </td>
+                <?php while($t = mysqli_fetch_assoc($tickets)) : ?>
+                <tr>
+                    <td><?= $t['project_name'] ?></td>
+                    <td><?= $t['tgl_tiket'] ?></td>
+                    <td><?= $t['nama_modul'] ?></td>
+                    <td><?= $t['prioritas'] ?></td>
+                    <td><?= $t['status'] ?></td>
+                    <td>
+                        <button class="btn btn-info btn-sm" onclick="showDetail(
+                            '<?= $t['no_tiket'] ?>',
+                            '<?= $t['tgl_tiket'] ?>',
+                            '<?= $t['project_name'] ?>',
+                            '<?= $t['nama_modul'] ?>',
+                            '<?= $t['sub_modul'] ?>',
+                            '<?= addslashes($t['topik']) ?>',
+                            '<?= addslashes($t['deskripsi']) ?>',
+                            '<?= $t['foto'] ? 'uploads/'.$t['foto'] : 'LOGO SCBD WHITE[1].png' ?>',
+                            '<?= $t['prioritas'] ?>',
+                            '<?= $t['status'] ?>'
+                        )">Detail</button>
+                    </td>
+                </tr>
+                <?php endwhile; ?>
             </tbody>
         </table>
     </div>
@@ -412,7 +479,7 @@ if (!in_array($_SESSION['nama_jabatan'], $allowed)) {
 </div>
 </div>
 
-    <!-- MODAL FORM -->
+<!-- FORM TAMBAH TICKETING -->
 <div class="modal fade" id="modalForm">
 <div class="modal-dialog modal-lg modal-dialog-centered">
 <div class="modal-content">
@@ -438,20 +505,26 @@ if (!in_array($_SESSION['nama_jabatan'], $allowed)) {
         <div class="col-md-6">
             <label>Nama Project</label>
             <select class="form-select" name="project">
-                <option>Pilih Project</option>
+                <option value="">-- Pilih Project --</option>
+                <?php while($p = mysqli_fetch_assoc($projects)) : ?>
+                    <option value="<?= $p['id_project'] ?>"><?= $p['project_name'] ?></option>
+                <?php endwhile; ?>
             </select>
         </div>
 
         <div class="col-md-6">
             <label>Modul</label>
             <select class="form-select" name="modul">
-                <option>Pilih Modul</option>
+                <option value="">-- Pilih Modul --</option>
+                <?php while($m = mysqli_fetch_assoc($moduls)) : ?>
+                    <option value="<?= $m['id_modul'] ?>"><?= $m['nama_modul'] ?> (<?= $m['project_name'] ?>)</option>
+                <?php endwhile; ?>
             </select>
         </div>
 
         <div class="col-md-6">
             <label>Sub Modul</label>
-            <input type="text" class="form-control" name="topik">
+            <input type="text" class="form-control" name="submodul">
         </div>
 
         <div class="col-md-12">
@@ -472,24 +545,22 @@ if (!in_array($_SESSION['nama_jabatan'], $allowed)) {
         <div class="col-md-6">
             <label>Prioritas</label>
             <select class="form-select" name="prioritas">
-                <option>Low</option>
-                <option>Medium</option>
-                <option>High</option>
+                <option value="">-- Pilih Prioritas --</option>
+                <?php while($pr = mysqli_fetch_assoc($prioritas)) : ?>
+                    <option value="<?= $pr['nama_prioritas'] ?>"><?= $pr['nama_prioritas'] ?></option>
+                <?php endwhile; ?>
             </select>
         </div>
 
     </div>
-
-    <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button class="btn btn-primary">Simpan</button>
-    </div>
-
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan Ticket</button>
+        </div>
     </form>
 </div>
 </div>
 </div>
-
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
